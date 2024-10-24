@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crackers Background with Timer & Logo</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background-color: #000;
+            color: white;
+            overflow: hidden; /* Prevents unwanted scroll */
+        }
+
+        /* Background GIF */
+        .background-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background-image: url('https://i.pinimg.com/originals/b9/3d/49/b93d49cfb9653b743ef2692cb9d3f205.gif');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+        }
+
+        /* Timer Container */
+        .timer-container {
+            text-align: center;
+            color: white;
+            background-color: rgba(0, 0, 0, 0.7); /* Semi-transparent background for content */
+            padding: 10px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            position: relative;
+            width: 70%; /* Adjust for mobile responsiveness */
+            margin: 20px auto; /* Center the container */
+        }
+
+        #timer-display {
+            font-size: 4rem;
+            margin-bottom: 20px;
+            color: white;
+        }
+
+        .button-container {
+            margin: 10px 0;
+        }
+
+        button {
+            font-size: 1.2rem;
+            padding: 10px 20px;
+            margin: 5px;
+            cursor: pointer;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+        }
+
+        #stop-btn {
+            background-color: #FFA500; /* Orange color for Stop button */
+        }
+
+        input {
+            font-size: 1.2rem;
+            padding: 5px;
+            margin: 10px;
+            text-align: center;
+        }
+
+        /* Logo at the bottom */
+        .logo-container {
+            position: absolute;
+            bottom: 80px;
+            width: 100%;
+            text-align: center;
+        }
+
+        .logo-container img {
+            max-width: 200px; /* Adjust as needed */
+            height: auto;
+        }
+
+        /* Responsive adjustments for mobile devices */
+        @media (max-width: 600px) {
+            .timer-container {
+                font-size: 2rem;
+            }
+
+            .logo-container img {
+                max-width: 150px;
+            }
+        }
+
+        /* Default font size for larger screens (PC) */
+        h1 {
+            font-size: 40px; /* Default font size for PC */
+        }
+
+        /* Mobile screen adjustments */
+        @media (max-width: 600px) {
+            h1 {
+                font-size: 24px; /* Adjusted font size for mobile devices */
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Background GIF -->
+    <div class="background-container"></div>
+
+    <!-- Timer at the top -->
+    <div class="timer-container">
+        <h1>விளையாட்டு நேரம்</h1>
+        <div id="timer-display">00:00</div>
+        <input type="number" id="time-input" placeholder="Enter time in seconds" min="1">
+        <button id="start-btn">Start</button>
+        <button id="stop-btn">Stop</button>
+
+        <!-- Audio files for sound effects -->
+        <audio id="second-sound" src="start-sound.mp3"></audio>
+        <audio id="buzzer-sound" src="stop-sound.mp3"></audio>
+
+    </div>
+
+    <!-- JavaScript to handle timer functionality -->
+   <script>
+        let countdown;  // To store the interval
+        let duration; // The duration will be set by the user input
+        let remainingTime;  // Track remaining time
+        const display = document.getElementById('timer-display');
+        const secondSound = document.getElementById('second-sound');
+        const buzzerSound = document.getElementById('buzzer-sound');
+
+        // Function to format time as mm:ss
+        function formatTime(seconds) {
+            const minutes = Math.floor(seconds / 60);
+            const secs = seconds % 60;
+            return `${minutes < 10 ? '0' : ''}${minutes}:${secs < 10 ? '0' : ''}${secs}`;
+        }
+
+        // Start Timer function
+        document.getElementById('start-btn').addEventListener('click', function () {
+            const userInput = document.getElementById('time-input').value;
+            if (userInput && userInput > 0) {
+                clearInterval(countdown); // Clear any existing timer
+                duration = parseInt(userInput);  // Set duration based on user input
+                remainingTime = duration;  // Set remaining time to user input
+                countdown = setInterval(() => {
+                    if (remainingTime <= 0) {
+                        clearInterval(countdown);
+                        display.textContent = "00:00";
+						secondSound.pause()
+                        buzzerSound.play();
+                    } else {
+                        remainingTime--;
+                        display.textContent = formatTime(remainingTime);
+                        secondSound.play();  // Play sound every second
+                    }
+                }, 1000);
+            } else {
+                alert("Please enter a valid time in seconds.");
+            }
+        });
+
+        // Stop Timer function
+        document.getElementById('stop-btn').addEventListener('click', function () {
+            clearInterval(countdown);
+			buzzerSound.play();
+        });
+
+
+        // Initial display
+        display.textContent = "00:00";
+    </script>
+
+
+    <!-- Company Logo at the bottom -->
+    <div class="logo-container">
+        <img src="https://i.ytimg.com/vi/_cEPKKn4wws/maxresdefault.jpg" alt="Company Logo">
+    </div>
+	
+</body>
+</html>
