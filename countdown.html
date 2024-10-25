@@ -157,7 +157,7 @@
                     if (remainingTime <= 0) {
                         clearInterval(countdown);
                         display.textContent = "00:00";
-						secondSound.pause()
+						secondSound.pause();
                         buzzerSound.play();
                     } else {
                         remainingTime--;
@@ -173,6 +173,7 @@
         // Stop Timer function
         document.getElementById('stop-btn').addEventListener('click', function () {
             clearInterval(countdown);
+			secondSound.pause();
 			buzzerSound.play();
         });
 
