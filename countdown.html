@@ -64,7 +64,10 @@
         }
 
         #stop-btn {
-            background-color: #FF0000; /* Orange color for Stop button */
+            background-color: #FF0000; /* Red color for Stop button */
+        }
+		#sound-btn {
+            background-color: #FFA500; /* Orange color for Stop button */
         }
 
         input {
@@ -123,6 +126,7 @@
         <input type="number" id="time-input" placeholder="Enter time in seconds" min="1">
         <button id="start-btn">Start</button>
         <button id="stop-btn">Stop</button>
+		<button id="sound-btn">Sound</button>
 
         <!-- Audio files for sound effects -->
         <audio id="second-sound" src="start-sound.mp3"></audio>
@@ -153,6 +157,7 @@
                 clearInterval(countdown); // Clear any existing timer
                 duration = parseInt(userInput);  // Set duration based on user input
                 remainingTime = duration;  // Set remaining time to user input
+				secondSound.muted = false;
                 countdown = setInterval(() => {
                     if (remainingTime <= 0) {
                         clearInterval(countdown);
@@ -162,7 +167,9 @@
                     } else {
                         remainingTime--;
                         display.textContent = formatTime(remainingTime);
+						//secondSound.muted = false;
                         secondSound.play();  // Play sound every second
+						
                     }
                 }, 1000);
             } else {
@@ -176,10 +183,19 @@
 			secondSound.pause();
 			buzzerSound.play();
         });
+        // Stop Sound function
+        document.getElementById('sound-btn').addEventListener('click', function () {
+			//secondSound.pause();
+			if (remainingTime > 0) {
+			secondSound.muted = true;
+			//buzzerSound.play();
+			}
+        });		
 
 
         // Initial display
         display.textContent = "00:00";
+
     </script>
 
 
